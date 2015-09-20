@@ -1,0 +1,26 @@
+DROP TABLE test3;  
+CREATE TABLE test3(
+id int,
+ver int default 0,
+name varchar(20),
+action varchar(10),
+timestamp timestamp default current_timestamp,
+UNIQUE (id, ver)
+);
+
+CREATE OR REPLACE FUNCTION version_c() RETURNS TRIGGER AS $version_c$
+BEGIN
+      SELECT max(ver) + 1 INTO NEW.ver
+      FROM test3
+      WHERE id = NEW.id;
+      If NEW.ver IS NULL  THEN
+          NEW.ver = 1;
+      END IF;
+ RETURN NEW;
+END;
+$version_c$
+language plpgsql;
+
+CREATE TRIGGER tr_version_c
+  BEFORE INSERT OR UPDATE ON test3
+  FOR EACH ROW EXECUTE PROCEDURE version_c();
