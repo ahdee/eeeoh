@@ -4,10 +4,12 @@ id int,
 ver int default 0,
 name varchar(20),
 action varchar(10),
-timestamp timestamp default current_timestamp,
+timestamp timestamp(2) default (now() at time zone 'PST'),
 UNIQUE (id, ver)
 );
--- 
+
+-- create function here
+
 CREATE OR REPLACE FUNCTION version_c() RETURNS TRIGGER AS $version_c$
 BEGIN
       SELECT max(ver) + 1 INTO NEW.ver
@@ -24,3 +26,8 @@ language plpgsql;
 CREATE TRIGGER tr_version_c
   BEFORE INSERT OR UPDATE ON test3
   FOR EACH ROW EXECUTE PROCEDURE version_c();
+  
+-- some examples 
+INSERT INTO test3 (id, ver, name, action, timestamp) VALUES (1,DEFAULT, 'alex','create',DEFAULT);
+INSERT INTO test3 (id, ver, name, action, timestamp) VALUES (1,DEFAULT, 'marcus','modify',DEFAULT);
+INSERT INTO test3 (id, ver, name, action, timestamp) VALUES (2,DEFAULT, 'marcus','create',DEFAULT);
