@@ -23,6 +23,8 @@ END;
 $version_c$
 language plpgsql;
 
+-- create trigger here 
+
 CREATE TRIGGER tr_version_c
   BEFORE INSERT OR UPDATE ON test3
   FOR EACH ROW EXECUTE PROCEDURE version_c();
