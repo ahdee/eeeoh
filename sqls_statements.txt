@@ -1,0 +1,80 @@
+ALTER TABLE userlogin
+ADD FOREIGN KEY (userlogin_projects_id)
+REFERENCES userlogin_projects(id);
+
+-- add
+ALTER TABLE userlogin
+ADD userlogin_projects_id INT REFERENCES userlogin_projects(id)
+
+-- move up or down 
+ALTER TABLE Employees MODIFY COLUMN empName VARCHAR(50) AFTER department;
+
+
+
+-- combining a junction table 
+
+SELECT userlogin.firstname, userlogin.email, userlogin.usertype, userlogin.notes, userlogin_projects.project_id, projects.name
+FROM userlogin
+INNER JOIN userlogin_projects ON userlogin.id = userlogin_projects.userlogin_id
+
+INNER JOIN projects ON userlogin_projects.project_id = projects.id
+
+
+
+SELECT userlogin.firstname, userlogin.email, userlogin.usertype, userlogin.notes, userlogin_projects.project_id, projects.name FROM userlogin INNER JOIN userlogin_projects ON userlogin.id = userlogin_projects.userlogin_id
+INNER JOIN projects ON userlogin_projects.project_id = projects.id
+
+
+
+SELECT sample.id, sampletype.tissue, subtype.subtype, location.name
+FROM sample
+INNER JOIN sampletype ON sample.sampletype_id = sampletype.id
+INNER JOIN subtype ON sample.subtype_id = subtype.id
+INNER JOIN location ON sample.location_id = location.id
+INNER JOIN subject ON sample.subject_id = subject.id
+AND subject.id = 'b0cb232a-7f52-11e5-9f41-040176d8f001'
+
+SELECT sample.id, sampletype.tissue, subtype.subtype, location.name, sample.meta ->> 'i_remaining' weight2
+FROM sample
+INNER JOIN sampletype ON sample.sampletype_id = sampletype.id
+INNER JOIN subtype ON sample.subtype_id = subtype.id
+INNER JOIN location ON sample.location_id = location.id
+INNER JOIN subject ON sample.subject_id = subject.id
+AND subject.id = 'b0cb232a-7f52-11e5-9f41-040176d8f001'
+
+
+SELECT sample.id, sampletype.tissue, subtype.subtype, location.name, sample.meta
+FROM sample
+INNER JOIN sampletype ON sample.sampletype_id = sampletype.id
+INNER JOIN subtype ON sample.subtype_id = subtype.id
+INNER JOIN location ON sample.location_id = location.id
+INNER JOIN subject ON sample.subject_id = subject.id
+AND sample.subtype_id  <=5
+
+
+-- find its parents
+SELECT sample.id, sampletype.tissue, subtype.subtype, location.name, sample_parent_child.parent, sample.meta
+FROM sample
+INNER JOIN sampletype ON sample.sampletype_id = sampletype.id
+INNER JOIN subtype ON sample.subtype_id = subtype.id
+INNER JOIN location ON sample.location_id = location.id
+INNER JOIN sample_parent_child ON sample.id = sample_parent_child.child
+
+-- sample.id is the parent 
+
+SELECT sample.id, sampletype.tissue, subtype.subtype
+FROM sample
+INNER JOIN sampletype ON sample.sampletype_id = sampletype.id
+INNER JOIN subtype ON sample.subtype_id = subtype.id
+INNER JOIN sample_parent_child ON sample.id = sample_parent_child.parent
+
+-- this will give you information about the parents 
+
+SELECT sample.id, sampletype.tissue, subtype.subtype, sample_parent_child.parent
+FROM sample
+INNER JOIN sampletype ON sample.sampletype_id = sampletype.id
+INNER JOIN subtype ON sample.subtype_id = subtype.id
+INNER JOIN sample_parent_child ON sample.id = sample_parent_child.parent
+AND sample_parent_child.child = 'cc60d778-5cdc-4a52-a8d9-c23ed43140ba'
+
+
