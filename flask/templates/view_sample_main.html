@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+{% if name %}
+
+<!-- everything goes here -->
+<br>
+  <div><span class="generalHi">You are logged in as: {{ name }} </span> 
+  ::  <span><a href='./logout'> logout now </a></span>
+  </div>
+  <br>
+  <b> <span class="generalHi"> {{whatdidyoudo}} </span> </b>
+  <br><br>
+  
+<div class="CSSTableGenerator">
+	
+<table>
+	<tr>
+	 {% for d in headinfo %}
+		<td>{{d}}</td>
+	{% endfor %}
+	</tr>
+	
+	{% for d in data %}
+	<tr>
+		
+		<td>{{d[0]}}</td>
+		<td>{{d[1]}}</td>
+		<td>{{d[2]}}</td>
+		<td>{{d[3]}}</td>
+		<td>{{d[4]}}</td>
+		<td>{{d[5]}}</td>
+		
+	</tr>
+	<!-- add extra stuff here --> 
+	 <tr>
+    <td colspan="6" bgcolor="#f2f1eb">
+	weight: {{d[6]}}	label: {{d[7]}} file: <a href="#" onclick="return injectPic( '{{d[0]}}', '{{d[8]}}' );"> {{d[8]}} </a> <br>
+	location: {{d[9]}} <br>
+	<!-- meta stuff here -->
+	
+	meta:  <a href="#" onclick="return showmeta( '{{d[0]}}_meta', '{%for key in d[10]%} {{key}} : {{d[10][key]}} <br> {%endfor%} ' );"> show meta data </a> <br>
+	<div id={{d[0]}}_meta name={{d[0]}}_meta> </div>
+	
+	<br>
+	
+	<!-- end meta -->
+	
+	<!-- get parents and children -->
+	
+	<div id="{{d[0]}}_parents" name="{{d[0]}}_parents"> <a href="#" onclick="return getParents( '{{d[0]}}' );">Get Parents</a> </div>
+	<div id="{{d[0]}}_child"   name="{{d[0]}}_child"> <a href="#" onclick="return getChild( '{{d[0]}}' );">Get Child</a> </div>
+	<div id = "{{d[0]}}_d" name="{{d[0]}}_d" class=dpPC>hi</div>
+	<!-- end get parents and children -->
+	
+	<!-- show picture here -->
+	<div id={{d[0]}} name={{d[0]}}> </div>
+	<!-- end pics --> 
+	
+	
+	</td> <!-- end extra information including stuff like meta, pics --> 
+    
+	 
+	 </tr>
+	
+	
+	
+	{% endfor %}
+
+
+</table>
+
+<hr style="border-color:#820000">
+
+<a href="./view_sample?action=1&numrows={{next}}"> next 50 </a>
+
+
+<!-- start javascript here -->
+ <script>
+// get parents
+
+function getParents(getup) {
+
+$('.dpPC').hide();
+var ajax = 
+					$.getJSON('/view_sample', {
+					  subject: getup,
+					  action: 2
+					},
+
+					function(data) {
+							courseStr = console.table(data.result);
+							stuff = data.result[1]
+							var rout = ''
+							for (i=0; i < stuff.length; i++)
+							{
+							var r2 = stuff[i] + '';
+							var r = r2.split(","); 
+							rout += "<B>Type:</B> " + r[1] + ":" + r[2] + "<B> Subtype: </B>" + r[3] + "<B> Parent:</B> " + r[4] + "<br>"
+							// rout += stuff[i] + "<br>"
+							}
+							$("#"+getup+'_d').html(rout+"<Br>" );
+							$("#"+getup+'_d').slideDown("slow","linear");;
+							
+				});
+
+
+return false	
+}
+
+function getChild(getup) {
+
+$('.dpPC').hide();
+var ajax = 
+					$.getJSON('/view_sample', {
+					  subject: getup,
+					  action: 3
+					},
+
+					function(data) {
+							courseStr = console.table(data.result);
+							stuff = data.result[1]
+							var rout = ''
+							for (i=0; i < stuff.length; i++)
+							{
+							var r2 = stuff[i] + '';
+							var r = r2.split(","); 
+							rout += "<B>Type:</B> " + r[1] + ":" + r[2] + "<B> Subtype: </B>" + r[3] + "<B> Children:</B> " + r[5] + "<br>"
+							// rout += stuff[i] + "<br>"
+							}
+							$("#"+getup+'_d').html(rout+"<Br>" );
+							$("#"+getup+'_d').slideDown("slow","linear");
+							
+				});
+
+
+return false	
+}
+
+
+// get pictures dude
+
+function injectPic(theLink,pic) {
+  
+  var temp = '<img src="static/uploads/'
+  var outpic = temp.concat(pic,'" width="180" height="180">')
+  close = '<br><a href="#" onclick="document.getElementById(\''+theLink+'\').innerHTML=\'\';"> close </a>' 
+  document.getElementById(theLink).innerHTML = outpic+close;
+  
+  return false;// cancel the click
+}
+
+// show meta 
+function showmeta(theLink,meta) {
+  
+  close = '<br><a href="#" onclick="document.getElementById(\''+theLink+'\').innerHTML=\'\';"> close </a>' 
+  document.getElementById(theLink).innerHTML = meta+close;
+  
+  return false;// cancel the click
+}
+	
+	
+	
+	
+	
+ </script>
+<!-- end block of html stuff --> 
+
+
+
+
+{% else %}
+  <h1>You need to login or create an account dude</h1>
+  <a href='./login'> login here </a>
+{% endif %}
+
+
+
+ 
+   
+{% endblock %}

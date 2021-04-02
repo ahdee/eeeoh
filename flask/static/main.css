@@ -1,0 +1,145 @@
+/* Styles go here */
+
+/* Styles go here */
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body{
+  margin: 0 auto;
+}
+
+.content {
+  width: 100%;
+ 
+
+    
+    padding-top: 10px;
+    padding-right: 50px;
+    padding-bottom: 0px;
+    padding-left: 50px;
+
+  
+}
+
+a:link{
+      text-decoration: none;
+      color: #616161;
+}
+
+a:visited {
+	text-decoration: none;
+    color: #616161;
+}
+
+a:hover {
+    color: #99FF66;
+	text-decoration: none;
+}
+
+.tophead{
+font-weight:bold;
+color:#616161;
+letter-spacing:2pt;
+word-spacing:2pt;
+font-size:30px;
+text-align:RIGHT;
+
+font-family:arial, helvetica, sans-serif;
+line-height:1;
+margin:0px;
+padding:17px;
+padding-right: 10%;
+
+  
+}
+
+.tophead2{
+	
+	background:-o-linear-gradient(bottom, #721111 5%, #8c1515 100%);	
+		background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #721111), color-stop(1, #8c1515) );
+	    background:-moz-linear-gradient( center top, #721111 5%, #8c1515 100% );
+	    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#721111", endColorstr="#8c1515");	background: -o-linear-gradient(top,#721111,8c1515);
+
+	background-color:#721111;
+	border:0px solid #000000;
+	
+	border-width:0px 0px 1px 1px;
+	letter-spacing:2pt;
+word-spacing:2pt;
+font-size:22px;
+text-align:RIGHT;
+	font-family:Arial;
+	font-weight:bold;
+	color:#dad7cb;
+	padding-right: 5%;
+	
+}
+
+/* general headings */
+
+.generalHi {
+    font-family:arial, helvetica, sans-serif;
+	font-size:22px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	font-weight: bold;
+	text-align:LEFT;
+	color:#616161;
+}
+
+/* ------ FORM ELEMENTS GOES HERE --------------------- */
+
+input
+{
+    -webkit-border-radius: 5px; //For Safari, etc.
+    -moz-border-radius: 5px; //For Mozilla, etc.
+    border-radius: 5px; //CSS3 Feature
+	padding: 5px 5px; line-height: 20px; 
+	font-size:21px;
+}
+
+.form1 {
+    width: 300px;
+	height: 50px; 
+	
+}
+
+.formLabel {
+    font-family:arial, helvetica, sans-serif;
+	font-size:22px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	font-weight: bold;
+	text-align:LEFT;
+}
+
+.buttonstyle 
+{ 
+background: #4A8ACA; 
+
+color: #ffffff;
+height: 30px;
+width: 140px;
+margin-top: 3px;
+padding-bottom: 3px;
+}
+.buttonstyle:hover {background: #4A4A55; }
+
+/* overides jquery validated colors */
+
+.error {
+   color: red;
+   
+}
+
+.success {
+   color: green;
+  
+}
+
+.valid {
+   color: green;
+   
+}

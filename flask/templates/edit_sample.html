@@ -1,0 +1,1368 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+{% if name %}
+
+
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+<br>
+
+  <div><span class="generalHi">You are logged in as: {{ name }} </span> 
+  ::  <span><a href='./logout'> logout now </a></span>
+  </div>
+
+<br>
+
+<form role="form" id="subject-form" name = "subject-form" class="form-horizontal" method="post" enctype="multipart/form-data" action="javascript:void();">
+
+
+
+<!-- first row select where the sample is coming from  -->
+<div class="row">
+
+	<div class="col-lg-1" >  </div>
+
+		<div class="col-lg-2" ><label for="what1">Please Select subject ID </label></div>
+
+		<div class="col-lg-5" >
+	    <input type="text" class="form-control" id="what1" name = "what1" placeholder="Enter ID">
+		</div>
+
+
+		<div class="col-lg-1" ><label for="datec">Date Collection </label></div>
+		<div class="col-lg-2"><input type="text" id="datec" name="datec"></div>
+		<div class="col-lg-1" >  </div>
+
+		
+</div>
+<!-- first row select where the sample is coming from  -->
+
+
+<br>
+
+	
+<div class="row" id="hide1" name="hide1">
+
+	<div class="col-lg-1" >  </div>
+
+		<div class="col-lg-2" >
+			<label for="hide1_l">Select sample </label>
+		</div>
+
+		<div class="col-lg-9" id="hide1_no" name="hide1_no">
+	   
+		  
+			 <select class="form-control" id="sample_id" name = "sample_id" multiple>
+			 <div id="hide1_o" name ="hide1_o">     
+					<option value="-1">none</option>
+				</div>
+			 </select>
+
+		 </div>
+
+		
+</div>
+
+
+<div class="row" id="hide12" name="hide12">
+
+	<div class="col-lg-4" >  </div>
+
+		<div class="col-lg-7"> Sorry there are no samples associated with this subject as of yet. </div>
+		<div class="col-lg-1" >  </div>
+		
+</div>
+
+<!-- end 2nd row this is to display ids-->
+
+<br>
+
+
+
+
+
+<!-- details for specifics -->
+
+<div name="hide2" id="hide2">
+
+<!-- row 1 sample types -->
+<div class="row">
+		<div class="col-lg-1" >  </div>
+		
+		<div class="col-lg-2" >
+		<label for="sample">Sample Type</label>
+		</div>
+
+		<div class="col-lg-3" >  
+			 <select class="form-control" id="sample_type" name = "sample_type" >
+				 <option value="-1" selected></option>
+				{% for tags in sampletype %}
+			   <option value="{{tags[0]}}"> {{tags[2]}}: {{tags[1]}} </option>
+			  {% endfor %}
+
+			 
+			 </select>
+		</div>
+
+		<div class="col-lg-2" >
+		<label for="sample_subtype"> Sample subtype </label>
+		</div>
+
+		<div class="col-lg-3" >  
+			 <select class="form-control" id="sample_subtype" name = "sample_subtype" >
+			  <option value="10" selected></option>
+			  {% for tags in subtype %}
+			   <option value="{{tags[0]}}"> {{tags[1]}} </option>
+			  {% endfor %}  
+			 </select>
+		</div>
+<div class="col-lg-1" >  </div>
+
+<!-- end row 1 samples details -->
+</div>
+
+<br>
+<!-- row 2 location location location -->
+
+<!-- got rid of location dropdown bar-->
+<!--
+<div class="row">
+		<div class="col-lg-1" >  </div>
+		
+		<div class="col-lg-1" >
+		<label for="sample">Location</label>
+		</div>
+
+		<div class="col-lg-10" >
+			
+			 <select class="form-control" id="location" name = "location" >
+				 <option value="-1" selected></option>
+			 {% for tags in location[0] %}
+			   <option value="{{tags[0]}}"> {{tags}} </option>
+			  {% endfor %}
+			 </select>
+		</div></div>
+<!-- end -->
+
+<!-- end row 2 locations -->
+
+
+<br>
+<!-- row 3 location location search bar -->
+<div class="row">
+		<div class="col-lg-1" >  </div>
+		
+		<div class="col-lg-2" ><label for="sample">Location Search</label></div>
+		<div class="col-lg-6" >
+		<input type="text" class="form-control" id="whatlocation" name = "whatlocation" placeholder="where did you store this?">
+		</div>
+
+		<div class="col-lg-1" ><label for="sample">ADD</label></div>
+		<div class="col-lg-1" ><input type="text" class="form-control" id="addloc" name = "addloc"></div>
+		<div class="col-lg-1" >  </div>
+
+
+<!-- end row 3 locations -->
+</div>
+
+<br>
+<!-- add notes here -->
+<div class="row">
+				<div class="col-lg-1" >  </div>
+				<div class="col-lg-2" > <label for="notes"> Notes:</label> </div>
+				<div class="col-lg-8">
+				  <textarea class="form-control" rows="5" id="notes"  name="notes" placeholder="additional notes?" ></textarea>
+				  </div>
+				<div class="col-lg-1" >  </div>
+				
+</div>
+<!-- end notes --> 
+<!-- end hide 2 details -->
+</div>
+
+<!-- meta fields starts here -->
+<div id="dna" name="dna">
+ <hr style="border-color:#820000">
+  
+  <div class="form-group">
+	
+
+	<label for="weight" class="col-lg-1" id="weight_r2" name="weight_r2">Input Weight or Volume</label>
+	<div class="col-lg-2"> <input type="number" id="weight2" name="weight2" type="number" step=".2" > </div>
+
+	
+	<label for="volume" class="col-lg-1" id="volume_r" name="volume_r">Volume</label>
+	<div class="col-lg-2"> <input type="number" id="volume" name="volume" type="number" step=".2" > </div>
+
+	<div class="col-lg-1">
+		
+			 <select class="form-control" id="_unit" name = "_unit" >
+			 {% for tags in unit %}
+			   <option value="{{tags[0]}}"> {{tags[0]}} </option>
+			  {% endfor %}
+			 </select>
+	</div>
+
+	<div class="col-lg-1"><label for="conc">[c]</label></div>
+	<div class="col-lg-2"> <input type="number" id="conc" name="conc" type="number" step=".2" > </div>
+
+	<div class="col-lg-2">
+		
+			 <select class="form-control" id="cu" name = "cu" >
+			 {% for tags in unit %}
+			   <option value="{{tags[0]}}"> {{tags[0]}} </option>
+			  {% endfor %}
+			 </select>
+	</div>
+	
+	
+	
+</div>
+
+
+<div class="form-group">
+	<div class="col-lg-1" >  </div>
+
+	
+	
+	<label class="col-lg-1" for="a260">A260</label>
+	<div class="col-lg-2"> <input type="number" id="a260" name="a260"></div>
+
+	<label class="col-lg-1" for="a280"> a280 </label>
+	<div class="col-lg-2"> <input type="number" id="a280" name="a280"></div>
+
+	<label class="col-lg-1" for="a230"> a230 </label>
+	<div class="col-lg-2"> <input type="number" id="a230" name="a230"></div>
+	
+	
+
+	<div class="col-lg-2" >  </div>
+	
+</div>
+
+<div class="form-group">
+	<div class="col-lg-1" >  </div>
+
+	
+	
+	<label class="col-lg-1" for="din">DIN #</label>
+	<div class="col-lg-2"> <input type="number" id="din" name="din"></div>
+
+	<label class="col-lg-1" for="rin"> RIN # </label>
+	<div class="col-lg-2"> <input type="number" id="rin" name="rin"></div>
+
+	<label class="col-lg-1" for="qc"> QC  </label>
+	<div class="col-lg-2">
+		<select class="form-control" id="qc" name = "qc" >
+			 <option value="Nano-Drop"> Nano Drop </option>
+			  <option value="Qubit"> Qubit </option>
+		</select>
+		
+	</div>
+
+
+	<div class="col-lg-2" >  </div>
+	
+</div>
+
+
+<div class="form-group">
+	<div class="col-lg-1" >  </div>
+
+	
+	
+	<label class="col-lg-1" for="label2">Label</label>
+	<div class="col-lg-2"> <input type="text" id="label2" name="label2"></div>
+
+	
+
+	<div class="col-lg-8" >  </div>
+	
+</div>
+  
+  
+  
+  
+</div>
+<!-- end DNA meta fields -->
+
+
+<!-- start Library Prep meta fields -->
+<div id="library" name="library">
+ <hr style="border-color:#820000">
+  
+  <div class="form-group">
+	
+     <div class="col-lg-1" >  </div>
+	 
+	<label for="kit" class="col-lg-1">Kit Used</label>
+	<div class="col-lg-2"> <input type="text"  id="kit" name="kit"> </div>
+
+	
+	<label for="lot" class="col-lg-1" >Lot #</label>
+	<div class="col-lg-2"> <input type="text" id="lot" name="lot"> </div>
+
+	<label for="labelL" class="col-lg-1" > Label </label>
+	<div class="col-lg-2"> <input type="text" id="labelL" name="labelL"> </div>
+	
+	<div class="col-lg-1" >  </div>
+	
+</div>
+
+
+<div class="form-group">
+	<div class="col-lg-1" >  </div>
+
+	
+	
+	<label class="col-lg-1" for="dinL">DIN #</label>
+	<div class="col-lg-2"> <input type="number" id="dinL" name="dinL"></div>
+
+	<label class="col-lg-1" for="rinL"> RIN # </label>
+	<div class="col-lg-2"> <input type="number" id="rinL" name="rinL"></div>
+
+	<label class="col-lg-1" for="qcL"> QC  </label>
+	<div class="col-lg-2">
+		<select class="form-control" id="qcL" name = "qcL" >
+			 <option value="Nano-Drop"> Nano Drop </option>
+			  <option value="Qubit"> Qubit </option>
+		</select>
+		
+	</div>
+
+
+	<div class="col-lg-2" >  </div>
+	
+</div>
+
+<div class="form-group">
+	
+	<div class="col-lg-1" >  </div>
+
+		<div class="col-lg-2" >
+			<label>Select sample </label>
+		</div>
+
+	
+	       <select class="col-lg-9" id="samples4library" name = "samples4library" multiple>
+			    
+			{% for tags in lbrows %}
+			   <option value="{{tags[0]}}"> {{tags[0]}},{{ tags|join(',') }} </option>
+			  {% endfor %}
+			
+			</select>
+
+		 
+	
+	
+</div>  
+  
+  
+  
+</div>
+<!-- end library prep  -->
+
+
+
+<!-- start Seqeuncing meta fields -->
+<div id="seq" name="seq">
+ <hr style="border-color:#820000">
+  
+  <div class="form-group">
+	
+     <div class="col-lg-1" >  </div>
+	 
+	<label for="model" class="col-lg-1">Machine Model</label>
+	<div class="col-lg-2"> <input type="text"  id="model" name="model"> </div>
+
+	
+	<label for="facility" class="col-lg-1" >Facility</label>
+	<div class="col-lg-2"> <input type="text" id="facility" name="facility"> </div>
+
+	<label for="readsize" class="col-lg-1" > Read Size </label>
+	<div class="col-lg-2"> <input type="number" id="readsize" name="readsize"> </div>
+	
+	<div class="col-lg-1" >  </div>
+	
+</div>
+
+
+<div class="form-group">
+	<div class="col-lg-1" >  </div>
+
+	
+	
+	<label class="col-lg-1" for="depth">Depth (M)</label>
+	<div class="col-lg-2"> <input type="number" id="depth" name="depth"></div>
+
+	<label class="col-lg-1" for="lanes"> Lanes used </label>
+	<div class="col-lg-2"> <input type="number" id="lanes" name="lanes"></div>
+
+	<label class="col-lg-1" for="paired"> Paired End  </label>
+	<div class="col-lg-2">
+		<select class="form-control" id="paired" name = "paired" >
+			 <option value="single"> single </option>
+			  <option value="paired"> paired </option>
+		</select>
+		
+	</div>
+
+
+	<div class="col-lg-2" >  </div>
+	
+</div>
+
+<div class="form-group">
+	
+	<div class="col-lg-1" >  </div>
+
+		<div class="col-lg-2" >
+			<label>Select sample </label>
+		</div>
+
+	
+	       <select class="col-lg-9" id="samples4Seq" name = "samples4Seq" multiple>
+			    
+			{% for tags in libs %}
+			   <option value="{{tags[0]}}"> {{tags[0]}},{{ tags|join(',') }} </option>
+			  {% endfor %}
+			
+			</select>
+
+		 
+	
+	
+</div>  
+  
+  
+  
+</div>
+<!-- Seqeuncing -->
+
+
+<!-- start Analysis meta fields -->
+<div id="analysis" name="analysis">
+ <hr style="border-color:#820000">
+  
+  <div class="form-group">
+	
+     <div class="col-lg-1" >  </div>
+	 
+	<label for="model" class="col-lg-1">Genome Version</label>
+	<select class="col-lg-2" id="genome" name = "genome" >
+	  <option value="hg38">hg38</option>
+	  <option value="hg19">hg19</option>
+	  <option value="hg18">hg18</option>
+	  <option value="GRCh37">GRCh37</option>
+	  <option value="GRCh36">GRCh36</option>
+	  <option value="mm10">mm10</option>
+	  <option value="mm9">mm9</option>
+	</select> 
+	
+
+	
+	<label for="facility" class="col-lg-1" >Software</label>
+	<div class="col-lg-2"> <input type="text" id="software" name="software"> </div>
+
+	<label for="readsize" class="col-lg-1" > Version </label>
+	<div class="col-lg-2"> <input type="text" id="version" name="version"> </div>
+	
+	<div class="col-lg-1" >  </div>
+	
+</div>
+
+
+ 
+  <div class="form-group">
+	
+     <div class="col-lg-1" >  </div>
+	 
+	<label for="annt" class="col-lg-1">Predefined Anotations</label>
+	<select class="col-lg-2" id="annt" name = "annt" >
+	  <option value="hg38_gtf">hg38_gtf</option>
+	  <option value="hg19_gft">hg19_gtf</option>
+	  <option value="hg18_gft">hg18_gtf</option>
+	  <option value="mm10_gtf">mm10_gtf</option>
+	  <option value="mm9_gtf">mm9_gtf</option>
+	</select> 
+	
+
+	
+	<label for="annt2" class="col-lg-1" >Custom Annotation</label>
+	<div class="col-lg-2"> <input type="text" id="annt2" name="annt2"> </div>
+
+	<label for="module" class="col-lg-1" > Additional modules </label>
+	<div class="col-lg-2"> <input type="text" id="module" name="module"> </div>
+	
+	<div class="col-lg-1" >  </div>
+	
+</div>
+<!-- additional parameters -->
+<div class="form-group">
+				<div class="col-lg-1" >  </div>
+				<div class="col-lg-2" > <label for="param"> Additional Parameters:</label> </div>
+				<div class="col-lg-8">
+				  <textarea class="form-control" rows="5" id="param"  name="param" placeholder="Enter any additional parameters here" ></textarea>
+				  </div>
+				<div class="col-lg-1" >  </div>
+				
+</div>
+
+
+
+<div class="form-group">
+	
+	<div class="col-lg-1" >  </div>
+
+		<div class="col-lg-2" >
+			<label>Select Sequenced </label>
+		</div>
+
+	
+	       <select class="col-lg-9" id="cseqsample" name = "cseqsample" multiple>
+			    
+			{% for tags in cseqsample %}
+			   <option value="{{tags[0]}}"> {{tags[0]}},{{ tags|join(',') }} </option>
+			  {% endfor %}
+			
+			</select>
+
+		 
+	
+	
+</div>  
+  
+  
+  
+</div>
+<!-- Seqeuncing -->
+
+
+
+
+
+
+
+
+
+
+<div id=tissue name="tissue">
+<hr style="border-color:#820000">
+
+<div class="form-group">
+	<div class="col-lg-1" >  </div>
+
+	<label for="weight" class="col-lg-1" id="weight_r" name="weight_r">Weight or Volume</label>
+	<div class="col-lg-2"> <input type="number" id="weight" name="weight" type="number" step=".2" > </div>
+
+	<div class="col-lg-2">
+		
+			 <select class="form-control" id="tissue_unit" name = "tissue_unit" >
+			 {% for tags in unit %}
+			   <option value="{{tags[0]}}"> {{tags[0]}} </option>
+			  {% endfor %}
+			 </select>
+	</div>
+
+	<label class="col-lg-1" for="accession">Acession#</label>
+	<div class="col-lg-2"> <input type="text" id="accession" name="accession"></div>
+
+	<label class="col-lg-1" for="percent_tumor">% Tumor </label>
+	<div class="col-lg-2"> <input type="text" id="percent_tumor" name="percent_tumor" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode ==46'></div>
+
+	
+	
+</div>
+
+
+
+<div class="form-group">
+	<div class="col-lg-1" >  </div>
+	
+	<label for="state" class="col-lg-1">State</label>
+	<div class="col-lg-2">
+			<select class="form-control" id="state" name="state">
+				<option value="Fresh Frozen">Fresh Frozen</option>
+				<option value="FFPE">FFPE</option>
+			
+			 </select>
+
+	</div>
+
+	<label for="stage" class="col-lg-1">Stage</label>
+	<div class="col-lg-3">
+			<select class="form-control" id="stage" name="stage">
+				<option value="biopsy">biopsy</option>
+				<option value="metastasize">metastasize</option>
+				<option value="normal">normal</option>
+				<option value="primar">primary</option>
+				<option value="recurrent/residual">recurrent/residual</option>
+			 </select>
+	</div>
+    <label for="label" class="col-lg-1">Label</label>
+	<div class="col-lg-3"> <input type="text" id="label" name="label" class="form-control"></div>
+
+	
+
+</div>
+
+
+<!-- end tissue -->
+<!-- insert button -->
+
+<br>
+
+
+
+
+<!-- END insert button -->
+
+
+ </form>
+</div>  
+<!-- end tissue hiding  -->
+
+
+
+
+<br>
+
+<br>
+
+
+
+
+
+
+
+<hr style="border-color:#820000">
+<!-- insert button here -->
+<form id="uploadform" method="post" enctype="multipart/form-data" class="form-horizontal">
+<div class="form-group">
+	<div class="col-lg-1" >  </div>
+    <div class="col-lg-2"><label for="file">Select a file</label></div>
+    <div class="col-lg-2"><input name="file" type="file" class="file"></div>
+    <div class="col-lg-1"><button id="submit" type="button" class="btn btn-default">Upload</button></div>
+	<div class="col-lg-6" id='picout' name='picout'>  </div>
+</form>
+ 
+ 
+ </div>
+ <br>
+<div class="row">
+	<div class="col-lg-1" >  </div>
+	<div class="col-lg-2">
+	<button type="submit"id="insert"name="insert" class="btn btn-default">Insert</button>
+	</div>
+	<div class="col-lg-9" >  <input type="hidden" id="meta" name="meta" value="0">
+<input type="hidden" id="meta2" name="meta2" value="0">
+<input type="hidden" id="picname1" name="picname1" value="none.png">
+	</div>
+	
+
+ 
+  <div id="temp" name="temp"></div>
+ <script>
+  
+
+
+// autofill
+
+$(function() {
+	  
+	  
+    var nameTags = [
+      
+      {% for tags in IDs %}
+         "{{tags[0]}},age {{tags[1]}},sex {{tags[2]}},date {{tags[3]}}",      
+      {% endfor %}
+      
+    ];
+
+    $( "#what1" ).autocomplete({
+      source: nameTags
+    });
+    
+// end autofill what1 which is for ids
+// start autofill location      
+
+    
+	var locationTags = [
+      
+      {% for tags in location[0] %}
+         "{{tags[0]}},{{ tags|join(',') }}",      
+      {% endfor %}
+      
+    ];
+
+    $( "#whatlocation" ).autocomplete({
+      source: locationTags
+    });
+
+// end autofill locations    
+
+
+  });
+    
+
+  
+ // see what they want first, new or exisiting
+$('#datec').datepicker();
+$('#datec').datepicker().datepicker('setDate', new Date());
+$('#hide1').hide();
+$('#hide12').hide();
+$("#tissue").hide();
+$("#dna").hide();
+$("#library").hide();
+$("#seq").hide();
+$("#analysis").hide();
+
+ $('#what1').bind('blur', function() {
+		var thistable = 
+        $.getJSON('/edit_sample2', {
+          xtable: $( "#what1" ).val(),
+          
+		  ajDothis: 1
+        }, function(data) {
+				
+				var txt = "";
+			
+					
+				if (data.result == 0){
+					//id="hide1_no"
+					
+					$('#hide1').hide();
+					$('#hide12').fadeIn("slow");
+				}
+				else{
+				for (var x in data.result) {
+				txt += "<option value =" + data.result[x][0] +">" + data.result[x][0] + "," + data.result[x][1] + "," + data.result[x][2] + "," + data.result[x][3] + "," + data.result[x][4] + ","+data.result[x][5] + ","
+				+ data.result[x][6] + ","+data.result[x][7]+"</option>"	
+				$("#sample_id").html(txt);
+				$('#hide1').show();
+				$('#hide12').hide();
+				}
+				courseStr = console.table(data.result);
+			
+				
+			}
+        });
+        return false;
+      });
+
+
+// check if sample_type has been changed,
+// so if tissue was selected it would only give meta fields for tissue 
+// meta == 1 will activated tissue insert WITHOUT  sample selected
+
+ $('#sample_type').bind('change', function() {
+		
+		// var s = $( "#sample" ).val()
+		// get text instead of value 
+		var s = document.getElementById("sample_type").options[document.getElementById("sample_type").selectedIndex ].text
+		
+		if(/Tissue/.test(s)){
+			$("#tissue").slideDown("slow","linear");
+			$("#dna").slideUp("slow","linear");
+			$("#library").slideUp("slow","linear");
+			$("#seq").slideUp("slow","linear");
+			$("#analysis").slideUp("slow","linear");
+			document.getElementById('meta').value = 1; 
+		}
+		
+		else if  (/Library Prep/.test(s)) {
+			$("#tissue").slideUp("slow","linear");
+			$("#dna").slideUp("slow","linear");
+			$("#library").slideDown("slow","linear");
+			$("#seq").slideUp("slow","linear");
+			$("#analysis").slideUp("slow","linear");
+			document.getElementById('meta').value = 3; 
+		} 
+		
+		else if ( /Seqeunce:/.test(s) ) {
+			$("#tissue").slideUp("slow","linear");
+			$("#dna").slideUp("slow","linear");
+			$("#library").slideUp("slow","linear");
+			$("#seq").slideDown("slow","linear");
+			$("#analysis").slideUp("slow","linear");
+			document.getElementById('meta').value = 4; 
+		}
+		
+		else if ( /Data:/.test(s) ) {
+			$("#tissue").slideUp("slow","linear");
+			$("#dna").slideUp("slow","linear");
+			$("#library").slideUp("slow","linear");
+			$("#seq").slideUp("slow","linear");
+			$("#analysis").slideDown("slow","linear");
+			document.getElementById('meta').value = 5; 
+		}
+		
+		else{
+			$("#tissue").slideUp("slow","linear");
+			$("#dna").slideUp("slow","linear");
+			$("#library").slideUp("slow","linear");
+			$("#seq").slideUp("slow","linear");
+			$("#analysis").slideUp("slow","linear");
+			document.getElementById('meta').value = 0; 
+		} 
+        return false;
+      });
+
+ // check if subtype is selected
+ $('#sample_subtype')
+ .bind('change', function() {
+  $("#tissue").slideUp("slow","linear");
+  
+  var s = document.getElementById("sample_subtype").options[document.getElementById("sample_subtype").selectedIndex ].text
+  var ss = document.getElementById("sample_type").options[document.getElementById("sample_type").selectedIndex ].text
+      if(/.NA/.test(s)){
+			$("#dna").slideDown("slow","linear");
+			$("#library").slideUp("slow","linear");
+			document.getElementById('meta').value = 2;
+			
+      }
+      
+      else if  (/Library Prep/.test(ss)) {
+			$("#tissue").slideUp("slow","linear");
+			$("#dna").slideUp("slow","linear");
+			$("#library").slideDown("slow","linear");
+			$("#seq").slideUp("slow","linear");
+			$("#analysis").slideUp("slow","linear");
+			document.getElementById('meta').value = 3; 
+		} 
+		
+		else if ( /Seqeunce:/.test(ss) ) {
+			$("#tissue").slideUp("slow","linear");
+			$("#dna").slideUp("slow","linear");
+			$("#library").slideUp("slow","linear");
+			$("#seq").slideDown("slow","linear");
+			$("#analysis").slideUp("slow","linear");
+			document.getElementById('meta').value = 4; 
+		}
+		
+		else if ( /Data:/.test(ss) ) {
+			$("#tissue").slideUp("slow","linear");
+			$("#dna").slideUp("slow","linear");
+			$("#library").slideUp("slow","linear");
+			$("#seq").slideUp("slow","linear");
+			$("#analysis").slideDown("slow","linear");
+			document.getElementById('meta').value = 5; 
+		}
+      
+      
+      else{
+			$("#dna").slideUp("slow","linear");
+			$("#library").slideUp("slow","linear");
+			$("#dna").slideUp("slow","linear");
+			$("#library").slideUp("slow","linear");
+			$("#seq").slideUp("slow","linear");
+			$("#analysis").slideUp("slow","linear");
+			document.getElementById('meta').value = 0; 
+      }
+ })
+ 
+      // do something when sample_id's previous has been clicked 
+$('#sample_id').click(function() {
+  // update remaining weight
+  var s = document.getElementById("sample_id").options[document.getElementById("sample_id").selectedIndex ].text
+  var remainw = s.split(",");  
+  $("#weight_r").html('<font color="red">Max input: '+remainw[5] + '</font>'  );
+  $("#weight_r2").html('<font color="red">Max input: '+remainw[5] + '</font>'  );
+})
+
+
+
+
+
+$('#weight').change(function() {
+
+        var s = document.getElementById("sample_id").options[document.getElementById("sample_id").selectedIndex].text
+        var remainw = s.split(",");
+	var value = parseInt($("#weight").val());
+        var max = parseInt(remainw[5])
+        var min = .01;
+
+        if (value > max) {
+            value = max;
+        } else if (value < min) {
+            //value = min
+        }
+  
+        $("#weight").val(value);
+  
+
+})
+
+
+$('#weight2').change(function() {
+
+        var s = document.getElementById("sample_id").options[document.getElementById("sample_id").selectedIndex].text
+        var remainw = s.split(",");
+	var value = parseInt($("#weight2").val());
+        var max = parseInt(remainw[5])
+        var min = .01;
+
+        if (value > max) {
+            value = max;
+        } else if (value < min) {
+            //value = min
+        }
+  
+        $("#weight2").val(value);
+  
+
+})
+
+
+
+  $('#insert').bind('click', function() {
+	 meta = document.getElementById('meta').value
+	 // it is important to make sure sample_id is either null or single for tissue entry dude. sample_id.length
+	 var sample_id = $( "#sample_id" ).val()
+	 var card = document.getElementById("sample_id");
+	 if (card.selectedIndex != -1) {
+	  var s = document.getElementById("sample_id").options[document.getElementById("sample_id").selectedIndex ].text
+	  var remainw = s.split(",");  
+	 }
+	 
+	  
+		
+	 var weight = 	$( "#weight" ).val() 		
+	 if (weight == "" && meta == 1){
+	 alert("Warning! no weight was entered ")
+	 weight = 0
+	 }
+	// $("#temp").html('<br><b><font color="red">weight </font></b>'+remainw[5] + 'Sample Type ' + weight );
+	
+	var primary = 1
+	var remaining =  weight
+	
+			    
+	
+	
+	// meta == 1 is for tissue and you can only have one sample the most.  
+     if (meta==1){
+				// check first if this is derived from another sample
+				// if so it must be either single selected or none
+				// also the 
+				if (jQuery.isEmptyObject(sample_id) || sample_id.length==1) {
+					
+					// extract older weight
+					// it is crucial that we tell the server with this is a primary eg. not derived from another sample
+				
+					var primary = 1
+					var sample_parent = ''
+					
+					var sample_type=  $( "#sample_type" ).val()
+					var sample_subtype= $( "#sample_subtype").val()
+					  
+					  // if its primary then sample_subtype is always none - set to 10 please
+					  
+					if ( jQuery.isEmptyObject(sample_id) ) {
+					    primary = 1
+					    sample_subtype = 10
+					    }
+					    
+					  else {
+					    sample_type = remainw[6]
+					    // set sample_type same as parent
+					    sample_parent = remainw[0] // set sample_parent correctly
+					    primary = 0 // let server know that this has a parent and is thus not primary
+					    
+					    // below is no longer necessary since the server gets the older weight from the database
+					    // reason is because if a user uses the same sample multiple times and the browser
+					    // has not updated the parent's weight
+					    
+					    if (weight > 0) {
+					      remaining = parseFloat(remainw[5] - parseFloat(weight) )
+				    
+					    }
+					    
+					    // alert(remaining)
+					  }
+					
+					var thistable = 
+					$.getJSON('/edit_sample2', {
+					  subject: $( "#what1" ).val(),
+					  sample_parent:  sample_parent ,
+					  datec:  $( "#datec" ).val(),
+					  meta: meta,
+					  sample_type:  sample_type,
+					  sample_subtype: sample_subtype,
+					  
+					  location:  $( "#whatlocation" ).val(),
+					  addloc:  $( "#addloc" ).val(),
+					  weight:  $( "#weight" ).val(),
+					  remaining: remaining,
+					  primary: primary,
+					  tissue_unit:  $( "#tissue_unit" ).val(),
+					  accession:  $( "#accession" ).val(),
+					  percent_tumor:  $( "#percent_tumor" ).val(),
+					  state:          $( "#state" ).val(),
+					  stage:          $( "#stage" ).val(),
+					  notes:          $( "#notes" ).val(),
+					  label:          $( "#label" ).val(),
+					  file:           document.getElementById('picname1').value,
+					  ajDothis: 2
+					},
+
+				
+				
+					function(data) {
+							
+							var txt = "";
+						
+							courseStr = console.table(data.result);
+						
+							$("#temp").html( 'Good job now you can extract from this tissue ' + data.result[1] );
+							
+				});	// end output 
+
+				
+				} // end testing if sample_id is null or only has one
+				else {
+					
+					$("#temp").html('<br><b><font color="red">For Tissue you could only select one sample parent, sorry</font></b>');
+				}
+        } // end meta == 1 tissue only here
+
+
+ 
+ 
+
+else if (meta==2){
+				// DNA and RNA always have to be derived from an existing tissue
+				primary = 0
+				var weight = 	$( "#weight2" ).val()
+				sample_type = remainw[6] // this is the older parent sample_type
+				// set sample_type same as parent
+				sample_parent = remainw[0] // since this is DNA/RNA it has be be derived from parent sample_type
+				primary = 0 // let server know that this has a parent and is thus not primary
+				
+				
+				 
+				if (sample_id.length==1) {
+					
+					// extract current subtype
+					
+					var sample_subtype= $( "#sample_subtype").val()
+					  
+					  // if its primary then sample_subtype is always none - set to 10 please
+					  
+								
+					var thistable = 
+					$.getJSON('/edit_sample2', {
+					  subject: $( "#what1" ).val(),
+					  sample_parent:  sample_parent ,
+					  datec:  $( "#datec" ).val(),
+					  meta: meta,
+					  
+					  sample_type:  sample_type, // since this is DNA/RNA it has be be derived from parent sample_type
+					  sample_subtype: sample_subtype, // unique to this sample
+					  
+					  location:  $( "#whatlocation" ).val(),
+					  addloc:  $( "#addloc" ).val(),
+					  weight:  $( "#volume" ).val(),
+					
+					  remaining: $( "#weight2" ).val(),
+					  primary: primary,
+					  notes:          $( "#notes" ).val(),
+					  
+					  conc:          $( "#conc" ).val(),
+					  cu:    $( "#cu" ).val(),
+					
+					  a260:          $( "#a260" ).val(),
+					  a280:          $( "#a280" ).val(),
+					  a230:          $( "#a230" ).val(),
+					  din:          $( "#din" ).val(),
+					  rin:          $( "#rin" ).val(),
+					  qc:          $( "#qc" ).val(),
+					  label:          $( "#label2" ).val(),
+					  
+					  file:           document.getElementById('picname1').value,
+					  ajDothis: 2
+					},
+
+				
+				
+					function(data) {
+							
+							var txt = "";
+						
+							courseStr = console.table(data.result);
+						
+							$("#temp").html( 'Good job now you can use your DNA or RNA samples  ' + data.result[1] );
+							
+				});	// end output 
+
+				
+				} // end testing if sample_id is null or only has one
+				else {
+					
+					$("#temp").html('<br><b><font color="red">For Tissue you could only select one sample parent, sorry</font></b>');
+				}
+        } // end meta == 2 tissue only here
+
+		
+else if (meta==3){
+				// DNA and RNA always have to be derived from an existing tissue
+				primary = 0
+				//var weight = 	$( "#weight2" ).val()
+				//sample_type = remainw[6] // this is the older parent sample_type
+				// set sample_type same as parent
+				//sample_parent = remainw[0] // since this is DNA/RNA it has be be derived from parent sample_type
+				// samples4library
+				var samples4library= $( "#samples4library").val()
+				if (jQuery.isEmptyObject(samples4library) ) {
+				alert ("dude you need to select at least one sample")
+				}
+				else{
+				
+				pd = ''
+				$('#samples4library :selected').each(function(i, selected){ 
+				  pd = $(selected).val() + ',' + pd; 
+				});
+				
+				
+				var thistable = 
+					$.getJSON('/edit_sample2', {
+					  
+					  sample_parent:  pd,
+					  datec:  $( "#datec" ).val(),
+					  meta: meta,
+					  sample_subtype: $( "#sample_subtype" ).val(),
+					  sample_type:  $( "#sample_type" ).val(), // library
+					  // no subtype for library heh, 
+					  
+					  location:  $( "#whatlocation" ).val(),
+					  addloc:  $( "#addloc" ).val(),
+					  
+					
+					  notes:          $( "#notes" ).val(),
+					  
+					  
+					
+					  kit:          $( "#kit" ).val(),
+					  lot:          $( "#lot" ).val(),
+					  labelL:          $( "#labelL" ).val(),
+					  dinL:          $( "#dinL" ).val(),
+					  rinL:          $( "#rinL" ).val(),
+					  qcL:          $( "#qcL" ).val(),
+					  labelL:          $( "#labelL" ).val(),
+					  
+					  file:           document.getElementById('picname1').value,
+					  ajDothis: 3
+					},
+
+				
+				
+					function(data) {
+							
+							var txt = "";
+						
+							courseStr = console.table(data.result);
+						
+							$("#temp").html( ' Good job now you can sequence this - yeeha ' + data.result[1]  );
+							
+				});	// end output 
+				
+				
+				
+				
+				}
+				 	
+		} // end meta == 3 tissue only here
+
+
+else if (meta==4){
+				// DNA and RNA always have to be derived from an existing tissue
+				primary = 0
+				
+			
+				var samples4library= $( "#samples4Seq").val()
+				if (jQuery.isEmptyObject(samples4Seq) ) {
+				alert ("dude you need to select at least one sample")
+				}
+				else{
+				
+				pd = ''
+				$('#samples4Seq :selected').each(function(i, selected){ 
+				  pd = $(selected).val() + ',' + pd; 
+				});
+				
+				
+				var thistable = 
+					$.getJSON('/edit_sample2', {
+					  
+					  sample_parent:  pd,
+					  datec:  $( "#datec" ).val(),
+					  meta: meta,
+					  sample_subtype: $( "#sample_subtype" ).val(),
+					  sample_type:  $( "#sample_type" ).val(), // sequencing dude
+					  // no subtype for library heh, 
+					  
+					  location:  $( "#whatlocation" ).val(),
+					  addloc:  $( "#addloc" ).val(),
+					  
+					
+					  notes:          $( "#notes" ).val(),
+					  
+					  
+					
+					  model:          $( "#model" ).val(),
+					  facility:          $( "#facility" ).val(),
+					  readsize:          $( "#readsize" ).val(),
+					  depth:          $( "#depth" ).val(),
+					  lanes:          $( "#lanes" ).val(),
+					  paired:          $( "#paired" ).val(),
+					  
+					  
+					  file:           document.getElementById('picname1').value,
+					  ajDothis: 4
+					},
+
+				
+				
+					function(data) {
+							
+							var txt = "";
+						
+							courseStr = console.table(data.result);
+						
+							$("#temp").html( 'Good job now do some analysis ' + data.result[0] );
+							
+				});	// end output 
+				
+				
+				
+				
+				}
+				 	
+		} // end meta == 4
+
+		
+		
+		
+else if (meta==5){
+				// it is important to include subtype here dude
+				primary = 0
+				pd = ''
+				$('#cseqsample :selected').each(function(i, selected){ 
+				  pd = $(selected).val() + ',' + pd; 
+				});
+				var sample_subtype = $( "#sample_subtype").val()
+				
+				
+				if (pd == '') {
+				alert ("dude you need to select at least on sample and one subtype")
+				}
+				else{
+				
+				
+				
+				
+				var thistable = 
+					$.getJSON('/edit_sample2', {
+					  
+					  sample_parent:  pd,
+					  datec:  $( "#datec" ).val(),
+					  meta: meta,
+					  sample_subtype: $( "#sample_subtype" ).val(),
+					  sample_type:  $( "#sample_type" ).val(), // sequencing dude
+					  // no subtype for library heh, 
+					  
+					  location:  $( "#whatlocation" ).val(),
+					  addloc:  $( "#addloc" ).val(),
+					  
+					
+					  notes:          $( "#notes" ).val(),
+					  
+					  
+					
+					  genome:          $( "#genome" ).val(),
+					  software:          $( "#software" ).val(),
+					  version:          $( "#version" ).val(),
+					  annt:          $( "#annt" ).val(),
+					  annt2:          $( "#annt2" ).val(),
+					  module:          $( "#module" ).val(),
+					  param:          $( "#param" ).val(),
+					  
+					  file:           document.getElementById('picname1').value,
+					  ajDothis: 5
+					},
+
+				
+				
+					function(data) {
+							
+							var txt = "";
+						
+							courseStr = console.table(data.result);
+						
+							$("#temp").html( 'completed with no errors - your files can be uploaded to ' + data.result[0] );
+							
+				});	// end output 
+				
+				
+				
+				
+				}
+				 	
+		} // end meta == 5		
+
+		
+// last line for testing meta's
+
+return false; 
+
+ });
+
+ 
+  
+// inserting pic
+
+$('#submit').click(function() {
+        event.preventDefault();
+        var form_data = new FormData($('#uploadform')[0]);
+        $.ajax({
+            type: 'POST',
+            url: '/upload',
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: 'json'
+        }).done(function(data, textStatus, jqXHR){
+            console.log(data);
+			var temp = '<img src="static/uploads/'
+			var outpic = temp.concat(data['name'],'" width="180" height="180">')
+            $("#picout").html(outpic);
+			document.getElementById('picname1').value = data['name']; 
+			
+            
+        }).fail(function(data){
+            alert('error!');
+        });
+    });
+
+//testing
+  
+  </script>
+
+
+
+ 
+  {% else %}
+  <h1>You need to login or create an account dude</h1>
+  <a href='./login'> login here </a>
+{% endif %}
+
+
+
+ 
+   
+{% endblock %}

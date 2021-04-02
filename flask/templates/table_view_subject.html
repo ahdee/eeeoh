@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+{% if name %}
+<br>
+  <div><span class="generalHi">You are logged in as: {{ name }} </span> 
+  ::  <span><a href='./logout'> logout now </a></span>
+  </div>
+  <br>
+  <b> <span class="generalHi"> {{whatdidyoudo}} </span> </b>
+  <br><br>
+
+
+<table class="table table-hover">
+	
+
+
+{% for d in final %}
+<tr>
+	<td>
+
+         <b>ID: </b>{{d[0][0]}} <br>
+         <b>Entered by: </b>{{d[0][1]}}<br>
+         <b>AGE: </b>{{d[0][2]}}<br>
+         <b>Sex: </b>{{d[0][3]}}<br>
+         <b>Date aquired: </b>{{d[0][4]}}<br>
+         <b>Date entered: </b>{{d[0][5]}}<br>
+         <b>Note: <br> </b>{{d[0][6]}}
+
+         
+         <br> <font color="blue">CONSENT(S)</font> <br>
+		{% for consent in d[1] %}
+				<b> Name: </b>{{consent[0]}} <b>Notes:</b> {{consent[1]}}
+				<br>
+		{% endfor %}
+
+    <br> <font color="blue">PROJECTS(S)</font> <br>
+		{% for p in d[2] %}
+				<b> Name: </b>{{p[0]}} <b>Group: </b> {{p[1]}} <b>Notes: </b> {{p[2]}}
+				<br>
+		{% endfor %}
+		
+		<br> <font color="blue">DIAGNOSIS(S)</font> <br>
+		{% for d in d[3] %}
+				<b> Name: </b>{{d[0]}} <b>Notes:</b> {{d[1]}}
+				<br>
+		{% endfor %}
+
+
+
+</td>
+</tr>
+
+{% endfor %}
+
+
+
+
+</table>
+
+
+
+
+ 
+  {% else %}
+  <h1>You need to login or create an account dude</h1>
+  <a href='./login'> login here </a>
+{% endif %}
+
+
+
+ 
+   
+{% endblock %}

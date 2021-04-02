@@ -1,0 +1,491 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+{% if name %}
+
+<!-- everything goes here -->
+<br>
+  <div><span class="generalHi">You are logged in as: {{ name }} </span> 
+  ::  <span><a href='./logout'> logout now </a></span>
+  </div>
+  <br>
+  <b> <span class="generalHi"> {{whatdidyoudo}} </span> </b>
+  <br><br>
+  
+<div class="CSSTableGenerator">
+
+
+
+<table>
+	<tr> <td>Projects</td> </tr>
+	
+	 {% for proj in projects %}
+		<tr><td>
+		Name: {{ proj[1] }} <br>
+		Group: {{ proj[2] }} <br>
+		Notes: {{ proj[3] }} <br>
+		
+		<div>  <a href="#" onclick="return getSubjects( '{{proj[0]}}');"> Get Subject </a>  </div>
+		<div id="subject_{{proj[0]}}" name="subject_{{proj[0]}}" class="uniProject">       </div>
+		
+		<div>  <a href="#" onclick="return getTissue( '{{proj[0]}}');"> How many Tissue Samples </a>  </div>
+		<div id="tissue_{{proj[0]}}" name="tissue_{{proj[0]}}" class="uniTissue">  tissue        </div>
+		
+		<div>  <a href="#" onclick="return getExtract( '{{proj[0]}}');"> How many Extracted </a>  </div>
+		<div id="extract_{{proj[0]}}" name="extract_{{proj[0]}}" class="uniExtract">  extracted       </div>
+		
+		<div>  <a href="#" onclick="return getLib( '{{proj[0]}}');"> How many Library Prep </a>  </div>
+		<div id="library_{{proj[0]}}" name="library_{{proj[0]}}" class="uniLibrary">     library     </div>
+		
+		<div>  <a href="#" onclick="return getSeq( '{{proj[0]}}');"> How many Sequenced </a>  </div>
+		<div id="seq_{{proj[0]}}" name="seq_{{proj[0]}}" class="uniSeq">      Seq    </div>
+		
+		<div>  <a href="#" onclick="return getData( '{{proj[0]}}');"> Data </a>  </div>
+		<div id="data_{{proj[0]}}" name="data_{{proj[0]}}" class="uniData">    data      </div>
+		
+		</td></tr>
+	{% endfor %}
+	
+	
+</table>
+
+<hr style="border-color:#820000">
+<a href="./tracker?action=1&numrows={{next}}"> next 50 </a>
+
+
+
+<!-- start javascript here -->
+ <script>
+// hide all first
+$('.uniProject').hide(); // close everthing
+$('.uniTissue').hide(); // close everthing
+$('.uniLibrary').hide(); // close everthing
+$('.uniSeq').hide(); // close everthing
+$('.uniData').hide(); // close everthing
+$('.uniExtract').hide(); // close everthing
+$('.uniSpSubject').hide(); // close everthing
+
+// get all subjects associated with this project
+
+function getSubjects(project) {
+
+$('.uniProject').hide(); // close everthing
+$('.uniLibrary').hide(); // close everthing
+$('.uniSeq').hide(); // close everthing
+$('.uniData').hide(); // close everthing
+$('.uniTissue').hide(); // close everthing
+$('.uniSpSubject').hide(); // close everthing
+$('.uniExtract').hide();
+var ajax = 
+					$.getJSON('/tracker', {
+					  project: project,
+					  action: 2
+					},
+
+					function(data) {
+							courseStr = console.table(data.result);
+							
+							
+							// subjects are in element == 0
+							
+							stuff = data.result[0]
+							
+							var rout = '<hr style="border-color:#820000"> Total ' + stuff.length + ' Samples <a href="#" onclick="$(\'.uniProject\').hide();">close</a> <br> <br>'
+							for (i=0; i < stuff.length; i++)
+								{
+									var r = stuff[i] ;
+									mlink = '<a href="#" onclick="return getSpSubject(\'' + r + '\')">' + r + '</a>';
+									
+									rout += "" + mlink + "<div class=\"uniSpSubject\" id=\"spSubject_" + r + "\"> </div>"
+								}
+							 rout += "<hr style=\"border-color:#820000\">"
+							// spit out all subjects
+							$("#"+'subject_'+project).html( rout );
+							
+							$("#"+'subject_'+project).slideDown("slow","linear");
+							
+				});
+
+
+return false	
+}
+
+
+
+function getSpSubject(subject) {
+
+
+$('.uniSpSubject').html(""); 
+
+// ajax get information about subject here dude
+
+var ajax = 
+					$.getJSON('/tracker', {
+					  project: subject,
+					  action: 3
+					},
+
+					function(data) {
+							courseStr = console.table(data.result);
+							
+							
+							// subjects are in element == 0
+							
+							stuff = data.result[0]
+							consent = data.result[1]
+							diagnosis = data.result[2]
+							
+							var rout = '<hr style="border-color:#820000">'
+								rout += '<b> ID: </b>' + stuff[0] + '<br>'		
+							    rout += '<b> Age: </b>' + stuff[2] + '<br>'
+							    rout += '<b> Sex: </b>' + stuff[3] + '<br>'
+								rout += '<b> Date of Collection: </b>' + stuff[4] + '<br>'
+								rout += '<b> Notes: </b>' + stuff[6] + '<br>'
+							    rout += '<b> <font color="blue"> Consents </font> </b> <br>' 
+							for (i=0; i < consent.length; i++)
+								{
+									rout += '-- ' + consent[i] + '<br>'
+								}
+							    rout += '<b> <font color="blue"> Diganosis </font> </b> <br>'
+							for (i=0; i < diagnosis.length; i++)
+								{
+									rout += '-- ' + diagnosis[i] + '<br>'
+								}	
+								
+							rout += '<hr style="border-color:#820000">'	
+							// spit out all subjects
+							$("#"+'spSubject_'+subject).html( rout );
+							$("#"+'spSubject_'+subject).slideDown("slow","linear");
+							
+				});
+
+// extract info about subject here dude
+
+//
+							
+							
+							
+				
+
+
+return false	
+}
+	
+	
+	
+// get parents
+
+function getParents(getup) {
+
+$('.dpPC').hide();
+var ajax = 
+					$.getJSON('/view_sample', {
+					  subject: getup,
+					  action: 2
+					},
+
+					function(data) {
+							courseStr = console.table(data.result);
+							stuff = data.result[1]
+							var rout = ''
+							for (i=0; i < stuff.length; i++)
+							{
+							var r2 = stuff[i] + '';
+							var r = r2.split(","); 
+							rout += "<B>Type:</B> " + r[1] + ":" + r[2] + "<B> Subtype: </B>" + r[3] + "<B> Parent:</B> " + r[4] + "<br>"
+							// rout += stuff[i] + "<br>"
+							}
+							$("#"+getup+'_d').html(rout+"<Br>" );
+							$("#"+getup+'_d').slideDown("slow","linear");;
+							
+				});
+
+
+return false	
+}
+
+function getChild(getup) {
+
+$('.dpPC').hide();
+var ajax = 
+					$.getJSON('/view_sample', {
+					  subject: getup,
+					  action: 3
+					},
+
+					function(data) {
+							courseStr = console.table(data.result);
+							stuff = data.result[1]
+							var rout = ''
+							for (i=0; i < stuff.length; i++)
+							{
+							var r2 = stuff[i] + '';
+							var r = r2.split(","); 
+							rout += "<B>Type:</B> " + r[1] + ":" + r[2] + "<B> Subtype: </B>" + r[3] + "<B> Children:</B> " + r[5] + "<br>"
+							// rout += stuff[i] + "<br>"
+							}
+							$("#"+getup+'_d').html(rout+"<Br>" );
+							$("#"+getup+'_d').slideDown("slow","linear");
+							
+				});
+
+
+return false	
+}
+
+
+// get pictures dude
+
+function injectPic(theLink,pic) {
+  
+  var temp = '<img src="static/uploads/'
+  var outpic = temp.concat(pic,'" width="180" height="180">')
+  close = '<br><a href="#" onclick="document.getElementById(\''+theLink+'\').innerHTML=\'\';"> close </a>' 
+  document.getElementById(theLink).innerHTML = outpic+close;
+  
+  return false;// cancel the click
+}
+
+// show meta 
+function showmeta(theLink,meta) {
+  
+  close = '<br><a href="#" onclick="document.getElementById(\''+theLink+'\').innerHTML=\'\';"> close </a>' 
+  document.getElementById(theLink).innerHTML = meta+close;
+  
+  return false;// cancel the click
+}
+	
+// get tissue set to 4
+
+function getTissue(project) {
+
+$('.uniProject').hide(); // close everthing
+$('.uniLibrary').hide(); // close everthing
+$('.uniSeq').hide(); // close everthing
+$('.uniData').hide(); // close everthing
+$('.uniTissue').hide(); // close everthing
+$('.uniSpSubject').hide(); // close everthing
+$('.uniExtract').hide();
+var ajax = 
+					$.getJSON('/tracker', {
+					  project: project,
+					  action: 4
+					},
+
+					function(data) {
+							courseStr = console.table(data.result);
+							
+							
+							// subjects are in element == 0
+							
+							stuff = data.result[0]
+							
+							var rout = '<hr style="border-color:#820000"> Total ' + stuff.length + ' Samples <a href="#" onclick="$(\'.uniTissue\').hide();">close</a> <br> <br>'
+							for (i=0; i < stuff.length; i++)
+								{
+									var r = stuff[i] ;
+									rout += stuff[i][0] + "<b> Tissue: </b> " + stuff[i][1] + " <br>"
+								}
+							
+							// spit out all subjects
+							$("#"+'tissue_'+project).html( rout );
+							
+							$("#"+'tissue_'+project).slideDown("slow","linear");
+							
+				});
+
+
+return false	
+}
+	
+
+	
+// get tissue set to 4
+
+function getExtract(project) {
+
+$('.uniProject').hide(); // close everthing
+$('.uniLibrary').hide(); // close everthing
+$('.uniSeq').hide(); // close everthing
+$('.uniData').hide(); // close everthing
+$('.uniTissue').hide(); // close everthing
+$('.uniSpSubject').hide(); // close everthing
+$('.uniExtract').hide();
+var ajax = 
+					$.getJSON('/tracker', {
+					  project: project,
+					  action: 5
+					},
+
+					function(data) {
+							courseStr = console.table(data.result);
+							
+							
+							// subjects are in element == 0
+							
+							stuff = data.result[0]
+							
+							var rout = '<hr style="border-color:#820000"> Total ' + stuff.length + ' Samples <a href="#" onclick="$(\'.uniExtract\').hide();">close</a> <br> <br>'
+							for (i=0; i < stuff.length; i++)
+								{
+									var r = stuff[i] ;
+									rout += stuff[i][0] + "<b> Tissue: </b> " + stuff[i][1] + "<b> Subtype: </b> " + stuff[i][2] + " <br>"
+								}
+							
+							// spit out all subjects
+							$("#"+'extract_'+project).html( rout );
+							
+							$("#"+'extract_'+project).slideDown("slow","linear");
+							
+				});
+
+
+return false	
+}	
+	
+function getLib(project) {
+
+$('.uniProject').hide(); // close everthing
+$('.uniLibrary').hide(); // close everthing
+$('.uniSeq').hide(); // close everthing
+$('.uniData').hide(); // close everthing
+$('.uniTissue').hide(); // close everthing
+$('.uniSpSubject').hide(); // close everthing
+$('.uniExtract').hide();
+var ajax = 
+					$.getJSON('/tracker', {
+					  project: project,
+					  track: 'Library %',
+					  action: 6
+					},
+
+					function(data) {
+							courseStr = console.table(data.result);
+							
+							
+							// subjects are in element == 0
+							
+							stuff = data.result[0]
+							
+							var rout = '<hr style="border-color:#820000"> Total ' + stuff.length + ' Samples <a href="#" onclick="$(\'.uniLibrary\').hide();">close</a> <br> <br>'
+							for (i=0; i < stuff.length; i++)
+								{
+									var r = stuff[i] ;
+									rout += stuff[i] + "<b> Library Completed: </b> "  + " <br>"
+								}
+							
+							// spit out all subjects
+							$("#"+'library_'+project).html( rout );
+							
+							$("#"+'library_'+project).slideDown("slow","linear");
+							
+				});
+
+
+return false	
+}
+
+function getSeq(project) {
+
+$('.uniProject').hide(); // close everthing
+$('.uniLibrary').hide(); // close everthing
+$('.uniSeq').hide(); // close everthing
+$('.uniData').hide(); // close everthing
+$('.uniTissue').hide(); // close everthing
+$('.uniSpSubject').hide(); // close everthing
+$('.uniExtract').hide();
+var ajax = 
+					$.getJSON('/tracker', {
+					  project: project,
+					  track: 'Seqeunce%',
+					  action: 6
+					},
+
+					function(data) {
+							courseStr = console.table(data.result);
+							
+							
+							// subjects are in element == 0
+							
+							stuff = data.result[0]
+							
+							var rout = '<hr style="border-color:#820000"> Total ' + stuff.length + ' Samples <a href="#" onclick="$(\'.uniSeq\').hide();">close</a> <br> <br>'
+							for (i=0; i < stuff.length; i++)
+								{
+									var r = stuff[i] ;
+									rout += stuff[i] + "<b> Seqeunced Completed: </b> "  + " <br>"
+								}
+							
+							// spit out all subjects
+							$("#"+'seq_'+project).html( rout );
+							
+							$("#"+'seq_'+project).slideDown("slow","linear");
+							
+				});
+
+
+return false	
+}
+	
+
+function getData(project) {
+
+$('.uniProject').hide(); // close everthing
+$('.uniLibrary').hide(); // close everthing
+$('.uniSeq').hide(); // close everthing
+$('.uniData').hide(); // close everthing
+$('.uniTissue').hide(); // close everthing
+$('.uniSpSubject').hide(); // close everthing
+$('.uniExtract').hide();
+var ajax = 
+					$.getJSON('/tracker', {
+					  project: project,
+					  track: 'Data%',
+					  action: 7
+					},
+
+					function(data) {
+							courseStr = console.table(data.result);
+							
+							
+							// subjects are in element == 0
+							
+							stuff = data.result[0]
+							
+							var rout = '<hr style="border-color:#820000"> Total ' + stuff.length + ' Samples <a href="#" onclick="$(\'.uniData\').hide();">close</a> <br> <br>'
+							for (i=0; i < stuff.length; i++)
+								{
+									var r = stuff[i] ;
+									rout += stuff[i] + "<b> Data: </b> "  + " <br>"
+								}
+							
+							// spit out all subjects
+							$("#"+'data_'+project).html( rout );
+							
+							$("#"+'data_'+project).slideDown("slow","linear");
+							
+				});
+
+
+return false	
+}	
+	
+	
+ </script>
+<!-- end block of html stuff --> 
+
+
+
+
+{% else %}
+  <h1>You need to login or create an account dude</h1>
+  <a href='./login'> login here </a>
+{% endif %}
+
+
+
+ 
+   
+{% endblock %}

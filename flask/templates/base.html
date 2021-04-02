@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+	  
+	  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js"></script>
+      <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+	  
+	  <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.js"></script>
+	  <script src="{{url_for('static', filename='bootstrap.js')}}"></script>
+	  
+	  
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='table.css') }}" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-theme.css') }}" />
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	
+	
+	
+	
+    
+	
+	{% if title %}
+    <title>{{ title }} - eeeoh dude</title>
+    {% else %}
+    <title>Welcome to EEEOH</title>
+    {% endif %}
+	
+	
+	 <script type=text/javascript>
+    $(function() {
+      
+     
+      $('a#xtable').bind('click', function() {
+        $.getJSON('/go', {
+          xtable: $('input[name="a"]').val(),
+          
+		  do: 1
+        }, function(data) {
+          $("#result").html(data.result);
+        });
+        return false;
+      });
+      
+      $('a#table_userlogin').bind('click', function() {
+        $.getJSON('/go', {
+          xtable: $('input[name="a"]').val(),
+          
+		  do: 2
+        }, function(data) {
+          $("#result").html(data.result);
+        });
+        return false; });
+     
+		// get tables 
+		$('a#getTable').bind('click', function() {
+				$.getJSON('/go', {
+				  //a: $('name="a"').val(),
+				  
+				  do: 2
+				}, function(data) {
+				  $("#result").html(data.result);
+				});
+				return false; });
+	 
+
+  $('#project-form').validate({
+        rules: {
+            name: {
+                minlength: 2,
+                required: true
+            },
+            groupname: {
+				minlength: 3,
+                required: true
+                
+            },
+           
+        },
+       
+        success: function (element) {
+            element.text('good').addClass('valid')
+                .closest('.form-group').removeClass('error').addClass('success');
+        }
+    });
+
+
+	  
+});
+
+
+function checkFilled(e) {
+	var inputVal = document.getElementById(e.id);
+    if (inputVal.value == 0) {
+        inputVal.style.backgroundColor = "yellow";
+    }
+    else{
+        inputVal.style.backgroundColor = "red";
+    }
+}
+
+
+
+
+	
+
+
+
+
+
+
+  </script>
+	
+  </head>
+
+  <body > <br><br>
+  <div class="container">
+     <div class="row">
+	 <div col-md-1></div>
+     <div col-md-11> 
+     <div class="tophead2"> <a href="./">HOME</a> | <a href="./tracker?action=1&numrows=0">TRACK</a> | <a href="./view_sample?action=1&numrows=0">SAMPLES</a> | <a href="./table_subject?numrows=0&action=0&parent_id=0"> SUBJECT </a> | CONTACT</div>
+    </div>
+	</div>
+    
+    <div class="row">
+	<div col-md-12> 
+      {% block content %}{% endblock %} 
+    </div>
+	
+	</div>
+ 
+ 
+ 
+ 
+ </div>
+  </body>
+
+</html>
+
+ 

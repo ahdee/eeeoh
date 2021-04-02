@@ -1,0 +1,701 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+{% if name %}
+
+
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+<br>
+
+  <div><span class="generalHi">You are logged in as: {{ name }} </span> 
+  ::  <span><a href='./logout'> logout now </a></span>
+  </div>
+
+<br>
+
+<form role="form" id="subject-form" name = "subject-form" class="form-horizontal" method="post" enctype="multipart/form-data" action="javascript:void();">
+
+
+
+<!-- first row select where the sample is coming from  -->
+<div class="row">
+
+	<div class="col-lg-1" >  </div>
+
+		<div class="col-lg-2" ><label for="what1">Please Select subject ID </label></div>
+
+		<div class="col-lg-5" >
+	    <input type="text" class="form-control" id="what1" name = "what1" placeholder="Enter ID">
+		</div>
+
+
+		<div class="col-lg-1" ><label for="datec">Date Collection </label></div>
+		<div class="col-lg-2"><input type="text" id="datec" name="datec"></div>
+		<div class="col-lg-1" >  </div>
+
+		
+</div>
+<!-- first row select where the sample is coming from  -->
+
+
+<br>
+
+	
+<div class="row" id="hide1" name="hide1">
+
+	<div class="col-lg-1" >  </div>
+
+		<div class="col-lg-2" >
+			<label for="hide1_l">Select sample </label>
+		</div>
+
+		<div class="col-lg-9" id="hide1_no" name="hide1_no">
+	   
+		  
+			 <select class="form-control" id="sample_id" name = "sample_id" multiple>
+			 <div id="hide1_o" name ="hide1_o">     
+					<option value="-1">none</option>
+				</div>
+			 </select>
+
+		 </div>
+
+		
+</div>
+
+
+<div class="row" id="hide12" name="hide12">
+
+	<div class="col-lg-4" >  </div>
+
+		<div class="col-lg-7"> Sorry there are no samples associated with this subject as of yet. </div>
+		<div class="col-lg-1" >  </div>
+		
+</div>
+
+<!-- end 2nd row this is to display ids-->
+
+<br>
+
+
+
+
+
+<!-- details for specifics -->
+
+<div name="hide2" id="hide2">
+
+<!-- row 1 sample types -->
+<div class="row">
+		<div class="col-lg-1" >  </div>
+		
+		<div class="col-lg-2" >
+		<label for="sample">Sample Type</label>
+		</div>
+
+		<div class="col-lg-3" >  
+			 <select class="form-control" id="sample_type" name = "sample_type" >
+				 <option value="-1" selected></option>
+				{% for tags in sampletype %}
+			   <option value="{{tags[0]}}"> {{tags[2]}}: {{tags[1]}} </option>
+			  {% endfor %}
+
+			 
+			 </select>
+		</div>
+
+		<div class="col-lg-2" >
+		<label for="sample_subtype"> Sample subtype </label>
+		</div>
+
+		<div class="col-lg-3" >  
+			 <select class="form-control" id="sample_subtype" name = "sample_subtype" >
+			  <option value="10" selected></option>
+			  {% for tags in subtype %}
+			   <option value="{{tags[0]}}"> {{tags[1]}} </option>
+			  {% endfor %}  
+			 </select>
+		</div>
+<div class="col-lg-1" >  </div>
+
+<!-- end row 1 samples details -->
+</div>
+
+<br>
+<!-- row 2 location location location -->
+
+<!-- got rid of location dropdown bar-->
+<!--
+<div class="row">
+		<div class="col-lg-1" >  </div>
+		
+		<div class="col-lg-1" >
+		<label for="sample">Location</label>
+		</div>
+
+		<div class="col-lg-10" >
+			
+			 <select class="form-control" id="location" name = "location" >
+				 <option value="-1" selected></option>
+			 {% for tags in location[0] %}
+			   <option value="{{tags[0]}}"> {{tags}} </option>
+			  {% endfor %}
+			 </select>
+		</div></div>
+<!-- end -->
+
+<!-- end row 2 locations -->
+
+
+<br>
+<!-- row 3 location location search bar -->
+<div class="row">
+		<div class="col-lg-1" >  </div>
+		
+		<div class="col-lg-2" ><label for="sample">Location Search</label></div>
+		<div class="col-lg-6" >
+		<input type="text" class="form-control" id="whatlocation" name = "whatlocation" placeholder="where did you store this?">
+		</div>
+
+		<div class="col-lg-1" ><label for="sample">ADD</label></div>
+		<div class="col-lg-1" ><input type="text" class="form-control" id="addloc" name = "addloc"></div>
+		<div class="col-lg-1" >  </div>
+
+
+<!-- end row 3 locations -->
+</div>
+
+<br>
+<!-- add notes here -->
+<div class="row">
+				<div class="col-lg-1" >  </div>
+				<div class="col-lg-2" > <label for="notes"> Notes:</label> </div>
+				<div class="col-lg-8">
+				  <textarea class="form-control" rows="5" id="notes"  name="notes" placeholder="additional notes?" ></textarea>
+				  </div>
+				<div class="col-lg-1" >  </div>
+				
+</div>
+<!-- end notes --> 
+<!-- end hide 2 details -->
+</div>
+
+<!-- meta fields starts here -->
+<div id="dna" name="dna">
+ <hr style="border-color:#820000">
+  
+  <div class="form-group">
+	
+
+	<label for="weight" class="col-lg-1" id="weight_r2" name="weight_r2">Input Weight or Volume</label>
+	<div class="col-lg-2"> <input type="number" id="weight2" name="weight2" type="number" step=".2" > </div>
+
+	<div class="col-lg-1">
+		
+			 <select class="form-control" id="tissue_unit" name = "tissue_unit" >
+			 {% for tags in unit %}
+			   <option value="{{tags[0]}}"> {{tags[0]}} </option>
+			  {% endfor %}
+			 </select>
+	</div>
+
+	
+	<label for="volume" class="col-lg-1" id="volume_r" name="volume_r">Volume</label>
+	<div class="col-lg-2"> <input type="number" id="volume" name="volume" type="number" step=".2" > </div>
+
+	<div class="col-lg-1">
+		
+			 <select class="form-control" id="_unit" name = "_unit" >
+			 {% for tags in unit %}
+			   <option value="{{tags[0]}}"> {{tags[0]}} </option>
+			  {% endfor %}
+			 </select>
+	</div>
+
+	<div class="col-lg-1"><label for="conc" id="conc_r" name="conc_r">[c]</label></div>
+	<div class="col-lg-2"> <input type="number" id="conc" name="conc" type="number" step=".2" > </div>
+
+	<div class="col-lg-1">
+		
+			 <select class="form-control" id=conc_unit" name = "conc_unit" >
+			 {% for tags in unit %}
+			   <option value="{{tags[0]}}"> {{tags[0]}} </option>
+			  {% endfor %}
+			 </select>
+	</div>
+	
+	
+	
+</div>
+
+
+<div class="form-group">
+	<div class="col-lg-1" >  </div>
+
+	
+	
+	<label class="col-lg-1" for="a260">A260</label>
+	<div class="col-lg-2"> <input type="number" id="a260" name="a260"></div>
+
+	<label class="col-lg-1" for="a280"> a280 </label>
+	<div class="col-lg-2"> <input type="number" id="a280" name="a280"></div>
+
+	<label class="col-lg-1" for="a230"> a230 </label>
+	<div class="col-lg-2"> <input type="number" id="a230" name="a230"></div>
+	
+	
+
+	<div class="col-lg-2" >  </div>
+	
+</div>
+
+  
+</div>
+
+
+
+<div id=tissue name="tissue">
+<hr style="border-color:#820000">
+
+<div class="form-group">
+	<div class="col-lg-1" >  </div>
+
+	<label for="weight" class="col-lg-1" id="weight_r" name="weight_r">Weight or Volume</label>
+	<div class="col-lg-2"> <input type="number" id="weight" name="weight" type="number" step=".2" > </div>
+
+	<div class="col-lg-2">
+		
+			 <select class="form-control" id="tissue_unit" name = "tissue_unit" >
+			 {% for tags in unit %}
+			   <option value="{{tags[0]}}"> {{tags[0]}} </option>
+			  {% endfor %}
+			 </select>
+	</div>
+
+	<label class="col-lg-1" for="accession">Acession#</label>
+	<div class="col-lg-2"> <input type="text" id="accession" name="accession"></div>
+
+	<label class="col-lg-1" for="percent_tumor">% Tumor </label>
+	<div class="col-lg-2"> <input type="text" id="percent_tumor" name="percent_tumor" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode ==46'></div>
+
+	
+	
+</div>
+
+
+
+<div class="form-group">
+	<div class="col-lg-1" >  </div>
+	
+	<label for="state" class="col-lg-1">State</label>
+	<div class="col-lg-2">
+			<select class="form-control" id="state" name="state">
+				<option value="Fresh Frozen">Fresh Frozen</option>
+				<option value="FFPE">FFPE</option>
+			
+			 </select>
+
+	</div>
+
+	<label for="stage" class="col-lg-1">Stage</label>
+	<div class="col-lg-3">
+			<select class="form-control" id="stage" name="stage">
+				<option value="biopsy">biopsy</option>
+				<option value="metastasize">metastasize</option>
+				<option value="normal">normal</option>
+				<option value="primar">primary</option>
+				<option value="recurrent/residual">recurrent/residual</option>
+			 </select>
+	</div>
+    <label for="label" class="col-lg-1">Label</label>
+	<div class="col-lg-3"> <input type="text" id="label" name="label" class="form-control"></div>
+
+	
+
+</div>
+
+
+<!-- end tissue -->
+<!-- insert button -->
+
+<br>
+
+
+<hr style="border-color:#820000">
+
+<!-- END insert button -->
+
+
+ </form>
+
+<!-- upload button here -->
+
+<!-- insert button here -->
+<form id="uploadform" method="post" enctype="multipart/form-data" class="form-horizontal">
+<div class="form-group">
+	<div class="col-lg-1" >  </div>
+    <div class="col-lg-2"><label for="file">Select a file</label></div>
+    <div class="col-lg-2"><input name="file" type="file" class="file"></div>
+    <div class="col-lg-1"><button id="submit" type="button" class="btn btn-default">Upload</button></div>
+	<div class="col-lg-6" id='picout' name='picout'>  </div>
+</form>
+ 
+ 
+ </div>
+ 
+<div class="row">
+	<div class="col-lg-1" >  </div>
+	<div class="col-lg-2">
+	<button type="submit"id="insert"name="insert" class="btn btn-default">Insert</button>
+	</div>
+	<div class="col-lg-9" >  <input type="hidden" id="meta" name="meta" value="0">
+<input type="hidden" id="meta2" name="meta2" value="0">
+<input type="hidden" id="picname1" name="picname1" value="none.png">
+	</div>
+	
+</div> 
+ 
+  <div id="temp" name="temp"></div>
+ <script>
+  
+
+
+// autofill
+
+$(function() {
+	  
+	  
+    var nameTags = [
+      
+      {% for tags in IDs %}
+         "{{tags[0]}},age {{tags[1]}},sex {{tags[2]}},date {{tags[3]}}",      
+      {% endfor %}
+      
+    ];
+
+    $( "#what1" ).autocomplete({
+      source: nameTags
+    });
+    
+// end autofill what1 which is for ids
+// start autofill location      
+
+    
+	var locationTags = [
+      
+      {% for tags in location[0] %}
+         "{{tags[0]}},{{ tags|join(',') }}",      
+      {% endfor %}
+      
+    ];
+
+    $( "#whatlocation" ).autocomplete({
+      source: locationTags
+    });
+
+// end autofill locations    
+
+
+  });
+    
+
+  
+ // see what they want first, new or exisiting
+$('#datec').datepicker();
+$('#hide1').hide();
+$('#hide12').hide();
+$("#tissue").hide();
+$("#dna").hide();
+
+ $('#what1').bind('blur', function() {
+		var thistable = 
+        $.getJSON('/edit_sample2', {
+          xtable: $( "#what1" ).val(),
+          
+		  ajDothis: 1
+        }, function(data) {
+				
+				var txt = "";
+			
+					
+				if (data.result == 0){
+					//id="hide1_no"
+					
+					$('#hide1').hide();
+					$('#hide12').fadeIn("slow");
+				}
+				else{
+				for (var x in data.result) {
+				txt += "<option value =" + data.result[x][0] +">" + data.result[x][0] + "," + data.result[x][1] + "," + data.result[x][2] + "," + data.result[x][3] + "," + data.result[x][4] + ","+data.result[x][5] + ","
+				+ data.result[x][6] + ","+data.result[x][7]+"</option>"	
+				$("#sample_id").html(txt);
+				$('#hide1').show();
+				$('#hide12').hide();
+				}
+				courseStr = console.table(data.result);
+			
+				
+			}
+        });
+        return false;
+      });
+
+
+// check if sample_type has been changed,
+// so if tissue was selected it would only give meta fields for tissue 
+// meta == 1 will activated tissue insert WITHOUT  sample selected
+
+ $('#sample_type').bind('change', function() {
+		
+		// var s = $( "#sample" ).val()
+		// get text instead of value 
+		var s = document.getElementById("sample_type").options[document.getElementById("sample_type").selectedIndex ].text
+		
+		if(/Tissue/.test(s)){
+			$("#tissue").slideDown("slow","linear");
+			$("#dna").slideUp("slow","linear");
+			document.getElementById('meta').value = 1; 
+		}
+		else{
+			$("#tissue").slideUp("slow","linear");
+			$("#dna").slideUp("slow","linear");
+			document.getElementById('meta').value = 0; 
+		} 
+        return false;
+      });
+
+ // check if subtype is selected
+ $('#sample_subtype')
+ .bind('change', function() {
+  $("#tissue").slideUp("slow","linear");
+  
+  var s = document.getElementById("sample_subtype").options[document.getElementById("sample_subtype").selectedIndex ].text
+      if(/.NA/.test(s)){
+	$("#dna").slideDown("slow","linear");
+	document.getElementById('meta').value = 2;
+	
+      }
+      else{
+	$("#dna").slideUp("slow","linear");
+	document.getElementById('meta').value = 0; 
+      }
+ })
+ 
+      // do something when sample_id's previous has been clicked 
+$('#sample_id').click(function() {
+  // update remaining weight
+  var s = document.getElementById("sample_id").options[document.getElementById("sample_id").selectedIndex ].text
+  var remainw = s.split(",");  
+  $("#weight_r").html('<font color="red">Max input: '+remainw[5] + '</font>'  );
+  $("#weight_r2").html('<font color="red">Max input: '+remainw[5] + '</font>'  );
+})
+
+
+
+
+
+$('#weight').change(function() {
+
+        var s = document.getElementById("sample_id").options[document.getElementById("sample_id").selectedIndex ].text
+        var remainw = s.split(",");
+	var value = parseInt($("#weight").val());
+        var max = parseInt(remainw[5])
+        var min = .01;
+
+        if (value > max) {
+            value = max;
+        } else if (value < min) {
+            //value = min
+        }
+  
+        $("#weight").val(value);
+  
+
+})
+
+
+$('#weight2').change(function() {
+
+        var s = document.getElementById("sample_id").options[document.getElementById("sample_id").selectedIndex ].text
+        var remainw = s.split(",");
+	var value = parseInt($("#weight2").val());
+        var max = parseInt(remainw[5])
+        var min = .01;
+
+        if (value > max) {
+            value = max;
+        } else if (value < min) {
+            //value = min
+        }
+  
+        $("#weight2").val(value);
+  
+
+})
+
+
+
+  $('#insert').bind('click', function() {
+	 meta = document.getElementById('meta').value
+	 // it is important to make sure sample_id is either null or single for tissue entry dude. sample_id.length
+	 var sample_id = $( "#sample_id" ).val()
+	 var card = document.getElementById("sample_id");
+	 if (card.selectedIndex != -1) {
+	  var s = document.getElementById("sample_id").options[document.getElementById("sample_id").selectedIndex ].text
+	  var remainw = s.split(",");  
+	 }
+	 
+	  
+		
+	 var weight = 	$( "#weight" ).val() 		
+	 if (weight == ""){
+	 alert("Warning! no weight was entered ")
+	 weight = 0
+	 }
+	// $("#temp").html('<br><b><font color="red">weight </font></b>'+remainw[5] + 'Sample Type ' + weight );
+	
+	var primary = 1
+	var remaining =  weight
+	
+			    
+	
+	
+	// meta == 1 is for tissue and you can only have one sample the most.  
+     if (meta==1){
+				// check first if this is derived from another sample
+				// if so it must be either single selected or none
+				// also the 
+				if (jQuery.isEmptyObject(sample_id) || sample_id.length==1) {
+					
+					// extract older weight
+					// it is crucial that we tell the server with this is a primary eg. not derived from another sample
+				
+					var primary = 1
+					var sample_parent = ''
+					
+					var sample_type=  $( "#sample_type" ).val()
+					var sample_subtype= $( "#sample_subtype").val()
+					  
+					  // if its primary then sample_subtype is always none - set to 10 please
+					  
+					if ( jQuery.isEmptyObject(sample_id) ) {
+					    primary = 1
+					    sample_subtype = 10
+					    }
+					    
+					  else {
+					    sample_type = remainw[6]
+					    // set sample_type same as parent
+					    sample_parent = remainw[0] // set sample_parent correctly
+					    primary = 0 // let server know that this has a parent and is thus not primary
+					    
+					    // below is no longer necessary since the server gets the older weight from the database
+					    // reason is because if a user uses the same sample multiple times and the browser
+					    // has not updated the parent's weight
+					    
+					    if (weight > 0) {
+					      remaining = parseFloat(remainw[5] - parseFloat(weight) )
+				    
+					    }
+					    
+					    // alert(remaining)
+					  }
+					
+					var thistable = 
+					$.getJSON('/edit_sample2', {
+					  subject: $( "#what1" ).val(),
+					  sample_parent:  sample_parent ,
+					  datec:  $( "#datec" ).val(),
+					  meta: meta,
+					  sample_type:  sample_type,
+					  sample_subtype: sample_subtype,
+					  
+					  location:  $( "#whatlocation" ).val(),
+					  addloc:  $( "#addloc" ).val(),
+					  weight:  $( "#weight" ).val(),
+					  remaining: remaining,
+					  primary: primary,
+					  tissue_unit:  $( "#tissue_unit" ).val(),
+					  accession:  $( "#accession" ).val(),
+					  percent_tumor:  $( "#percent_tumor" ).val(),
+					  state:          $( "#state" ).val(),
+					  stage:          $( "#stage" ).val(),
+					  notes:          $( "#notes" ).val(),
+					  label:          $( "#label" ).val(),
+					  file:           document.getElementById('picname1').value,
+					  ajDothis: 2
+					},
+
+				
+				
+					function(data) {
+							
+							var txt = "";
+						
+							courseStr = console.table(data.result);
+						
+							$("#temp").html( 'compledte with no errors' );
+							
+				});	// end output 
+
+				
+				} // end testing if sample_id is null or only has one
+				else {
+					
+					$("#temp").html('<br><b><font color="red">For Tissue you could only select one sample parent, sorry</font></b>');
+				}
+        } // end meta == 1 tissue only here
+
+return false; 
+
+ });
+ 
+ 
+  
+// inserting pic
+
+$('#submit').click(function() {
+        event.preventDefault();
+        var form_data = new FormData($('#uploadform')[0]);
+        $.ajax({
+            type: 'POST',
+            url: '/upload',
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: 'json'
+        }).done(function(data, textStatus, jqXHR){
+            console.log(data);
+			var temp = '<img src="static/uploads/'
+			var outpic = temp.concat(data['name'],'" width="180" height="180">')
+            $("#picout").html(outpic);
+			document.getElementById('picname1').value = data['name']; 
+			
+            
+        }).fail(function(data){
+            alert('error!');
+        });
+    });
+
+//testing
+  
+  </script>
+
+
+
+ 
+  {% else %}
+  <h1>You need to login or create an account dude</h1>
+  <a href='./login'> login here </a>
+{% endif %}
+
+
+
+ 
+   
+{% endblock %}

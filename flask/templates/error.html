@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+{% if name %}
+
+  <br>
+  <div><span class="generalHi">You are logged in as: {{ name }} </span> 
+  ::  <span><a href='./logout'> logout now </a></span>
+  </div>
+  <br>
+
+  <div class="row">
+    <div class="col-md-4" >  
+    
+    
+    
+    </div>
+    <div class="col-md-4" >
+	
+	   {{error}}
+	
+	
+	</div>
+    <div class="col-md-4" ></div>
+  </div>
+
+
+ 
+  {% else %}
+  <h1>You need to login or create an account dude</h1>
+  <a href='./login'> login here </a>
+{% endif %}
+
+
+
+ 
+   
+{% endblock %}

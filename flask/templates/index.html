@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+{% if name %}
+<br>
+  <div><span class="generalHi">You are logged in as: {{ name }} </span> 
+  ::  <span><a href='./logout'> logout now </a></span>
+  </div>
+  <br>
+  
+  <div class="CSSTableGenerator">
+         <table>
+		 <tr> <td colspan="3">Main Tables </td>  </tr>
+		 <tr> <td width="70%"> Track </td>    <td> </td> <td> <a href="./tracker?action=1&numrows=0"> view </a></td>     </tr>
+		 <tr> <td width="70%"> Subjects </td>    <td> <a href="./edit_subject">insert</a> </td> <td> <a href="./table_subject?numrows=0&action=0&parent_id=0"> view </a></td>     </tr>
+		 <tr> <td> Samples </td>      <td> <a href="./edit_sample?ajDothis=0"> insert </a> </td> <td> <a href="./view_sample?action=1&numrows=0">view</a> </td>  </tr>
+		 </table>
+   </div>
+   
+  <br><br>
+  
+   
+   <div class="CSSTableGenerator">
+    <table>
+		 <tr> <td colspan="3"> Sub-tables </td>  </td>        </tr>
+		 
+		 <tr> <td width="70%"> Consents </td> <td> <a href="./edit_consent">insert</a>  </td> <td> <a href="./table_consent?numrows=0&action=0&parent_id=0">view</a>  </td> </tr>
+		 <tr> <td> Diagnosis </td> <td>  <a href="./edit_diagnosis">insert</a> </td> <td> <a href="./table_diagnosis?numrows=0&action=0&parent_id=0">view</a> </td> </tr>
+		 <tr> <td> Locations </td> <td> <a href="./edit_location">insert</a> </td> <td> <a href="./table_location?numrows=0&action=0&parent_id=0">view</a> </td> </tr>
+		 
+		 <tr> <td> Sample Type </td> <td> <a href="./edit_sampletype">insert</a> </td> <td> <a href="./table_sampletype?numrows=0&action=0&parent_id=0">view</a> </td> </tr>
+		 <tr> <td> Subtype </td> <td> <a href="./edit_subtype">insert</a> </td> <td> <a href="./table_subtype?numrows=0&action=0&parent_id=0">view</a> </td> </tr>
+		 </table>
+  
+   </div> 
+   
+    <br><br>
+   
+    <div class="CSSTableGenerator">
+   <table>
+		 <tr> <td colspan="3"> Administration </td>  </tr>
+		
+		 <tr> <td width="70%"> Projects </td> <td> <a href="./edit_projects">insert</a> </td> <td> <a href="./table_projects?numrows=0&action=0"> view </a></td> </tr>
+		 
+		 <tr> <td> logger </td> <td>  </td> <td> <a href="./table_logger?numrows=0&action=0">view</a> </td> </td> </tr>
+		 
+		 <tr> <td> Users </td> <td> insert </td> <td> <a href="./table_user?numrows=0&action=0">view</a> </td> </td> </tr>
+		 <tr> <td width="70%"> Add Users to Projects </td> <td> edit </td> <td> view </td> </tr>
+		 </table>
+  
+  
+  </div> 
+  
+
+  
+  
+  {% else %}
+  <h1>You need to login or create an account dude</h1>
+  <a href='./login'> login here </a>
+{% endif %}
+
+{{content1}}
+
+ 
+   
+{% endblock %}
